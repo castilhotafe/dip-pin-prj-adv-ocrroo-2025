@@ -28,28 +28,28 @@ Complete the steps below and fill in the `> block` sections
 ### Installing and running OpenCV
 
 1. Examine the `pyproject.toml` what dependencies does it currently identify?
->
+>The pyproject.toml currently identifies no project dependencies. The dependencies list is empty and only the project metadata and Python version requirement are currently defined.
 >
 2. Create a `.venv` in this folder using `uv venv`
 3. Activate the `venv` as instructed by `uv`
 4. In order to complete the project, we need to install OpenCV. Fill in the following:
   - What role does OpenCV have in this project?
-  >
+  >OpenCV is used to work with video files in this project. It allows the application to open a video and extract individual frames as images. These images can then be processed by OCR to identify text displayed in the video.
   - What is the `uv pip` command to install OpenCV?
-  > `uv pip install ????`
+  > `uv pip install opencv-python`
   - What is the URL of this library's git repo?
-  > [Insert URL Here](https://github.com/opencv/????-?????)
+  > https://github.com/opencv/opencv
 5. Add OpenCV to your project using the `uv add` command:
-  > `uv add name-of-open-cv-library
+  > uv add opencv-python
 
 6. Have the dependencies in the `pyproject.toml` changed? If so, how?
-  >
+  >The dependencies changed because OpenCV was added to the project. Before no project dependencies were listed in the `pyproject.toml` file. After using `uv add`, OpenCV was recorded as a required library for the project.
   >
 7. Why did we use `uv add` over `uv pip`?
-  >
+  >We used `uv add` because it not only installs the library but also records it in the project's `pyproject.toml` file. This helps keep track of the dependencies required by the project and makes it easier for another developer to set up the same environment.
   >
 8. The `numpy` library is required for OpenCV. Should you add an explicit requirement for it? Why/Why not?
-  >
+  >I do't need to add NumPy as an explicit requirement because it was installed automatically as a dependency of OpenCV. OpenCV requires NumPy to work, so UV manages it as a related dependency when OpenCV is added to the project.
   >
 9. Commit the changes so far to git. Use the message `chore: add OpenCV dependency`
 10. Go to `preliminary/library_basics.py` and complete the required functionality.
