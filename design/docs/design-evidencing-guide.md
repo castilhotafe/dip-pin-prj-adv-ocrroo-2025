@@ -51,7 +51,8 @@ What does this person need from the application? What are their pain points?
 ### Relevant issue
 >
 > Link to an issue that covers a pain point relevant to the persona and explain why it is relevant.
->
+> 
+>Issue #2 – Read Code From Video - This issue is relevant because the persona struggles to read code displayed in programming videos. The OCR extraction feature helps convert visual content into readable text.
 
 ### Validation
 
