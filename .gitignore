@@ -10,3 +10,4 @@ wheels/
 .venv
 #MacOs
 .DS_Store
+.idea/
