@@ -15,7 +15,7 @@ Make sure you read the docstrings C.A.R.E.F.U.L.Y (yes, I took the L to check th
 from pathlib import Path
 import cv2
 import numpy as np
-
+import pytesseract
 
 VID_PATH = Path("resources/oop.mp4")
 
@@ -86,7 +86,24 @@ class CodingVideo:
             raise ValueError("Failed to encode frame")
         return buf.tobytes()
 
+    def get_text_from_frame(self, frame_number: int) -> str:
+        """
+        Retrieve the textual content from a specific frame in a sequence.
 
+        This method extracts and returns the text content from a designated frame
+        in a sequence, identified by its frame number. The functionality ensures that
+        the desired frame's associated textual data can be accessed efficiently.
+
+        Parameters:
+        frame_number : int
+            The index of the frame from which text content needs to be retrieved.
+
+        Returns:
+        str
+            The extracted text content corresponding to the specified frame number.
+        """
+        frame = self.get_frame_rgb_array(frame_number)
+        return pytesseract.image_to_string(frame)
 
 
     def save_as_image(self, seconds: int, output_path: Path | str = 'output.png') -> None:
@@ -107,7 +124,16 @@ def test():
     """Try out your class here"""
     oop = CodingVideo(VID_PATH)
     print(oop)
-    oop.save_as_image(42)
+    #oop.save_as_image(42)
+    seconds = 534
+
+    frame_number = oop.get_frame_number_at_time(seconds)
+
+    print(f"Frame: {frame_number}")
+
+    oop.save_as_image(seconds, "evidences/test_854.png")
+
+    print(oop.get_text_from_frame(frame_number))
 
 if __name__ == '__main__':
     test()
