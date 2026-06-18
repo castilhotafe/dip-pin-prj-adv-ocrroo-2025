@@ -3,6 +3,7 @@ const currentPosition = document.getElementById("current-position");
 const statusMessage = document.getElementById("status-message");
 const readCodeButton = document.getElementById("read-code-button");
 const ocrResult = document.getElementById("ocr-result");
+const contrastToggle = document.getElementById("contrast-toggle");
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -52,4 +53,16 @@ readCodeButton.addEventListener("click", async function () {
         ocrResult.textContent = "Unable to read code from this video position.";
         statusMessage.textContent = "Status: Error reading code from video.";
     }
+
+});
+contrastToggle.addEventListener("click", function () {
+    document.body.classList.toggle("high-contrast");
+
+    const highContrastEnabled = document.body.classList.contains("high-contrast");
+
+    contrastToggle.textContent = highContrastEnabled
+        ? "High Contrast Mode ON"
+        : "High Contrast Mode OFF";
+
+    contrastToggle.setAttribute("aria-pressed", highContrastEnabled);
 });

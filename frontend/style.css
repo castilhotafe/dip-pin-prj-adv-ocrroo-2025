@@ -18,6 +18,12 @@ header {
     color: #ffffff;
 }
 
+h1 {
+    color: #ff7a00;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(255, 122, 0, 0.4);
+}
+
 section {
     margin-top: 24px;
 }
@@ -52,6 +58,34 @@ button {
     white-space: pre-wrap;
     font-family: monospace;
     line-height: 1.6;
+}
+
+.high-contrast {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.high-contrast header {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.high-contrast button {
+    background-color: #ffffff;
+    color: #000000;
+    border: 2px solid #ffffff;
+}
+
+.high-contrast #ocr-result {
+    font-size: 1.3rem;
+    border-color: #ffffff;
+}
+
+.code-output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
 }
 
 @media (max-width: 600px) {
