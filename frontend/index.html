@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OCR Video Learning Assistant</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/frontend/style.css">
 </head>
 <body>
 
@@ -15,17 +15,20 @@
 
 <main>
 
-    <section>
-        <h2>Video Player</h2>
+    <section aria-labelledby="video-player-title">
+        <h2 id="video-player-title">Video Player</h2>
 
-        <video id="coding-video" controls>
-            <source src="../resources/oop.mp4" type="video/mp4">
+        <video
+                id="coding-video"
+                controls
+                aria-label="Coding video player">
+            <source src="/resources/oop.mp4" type="video/mp4">
             Your browser does not support video playback.
         </video>
     </section>
 
-    <section>
-        <h2>Video Navigation</h2>
+    <section aria-labelledby="video-navigation-title">
+        <h2 id="video-navigation-title">Video Navigation</h2>
 
         <p id="current-position">
             Current Position: 00:00
@@ -34,11 +37,28 @@
         <p id="status-message">
             Status: Ready.
         </p>
+        <button
+                id="read-code-button"
+                type="button"
+                aria-label="Read code from the current video position">
+            Read Code From Video
+        </button>
+
+        <section aria-labelledby="code-output-title">
+            <h2 id="code-output-title">Code From Video</h2>
+
+            <pre
+                    id="ocr-result"
+                    aria-live="polite"
+                    tabindex="0">
+Code extracted from the video will appear here.
+    </pre>
+        </section>
     </section>
 
 </main>
 
-<script src="app.js"></script>
+<script src="/frontend/app.js"></script>
 
 </body>
 </html>

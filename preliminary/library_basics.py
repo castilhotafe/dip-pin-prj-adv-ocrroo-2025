@@ -19,9 +19,9 @@ import pytesseract
 
 VID_PATH = Path("resources/oop.mp4")
 
+
 class CodingVideo:
     capture: cv2.VideoCapture
-
 
     def __init__(self, video: Path | str):
         self.capture = cv2.VideoCapture(str(video))
@@ -31,7 +31,6 @@ class CodingVideo:
         self.fps = self.capture.get(cv2.CAP_PROP_FPS)
         self.frame_count = int(self.capture.get(cv2.CAP_PROP_FRAME_COUNT))
         self.duration = self.frame_count / self.fps
-
 
     def __str__(self) -> str:
         """Displays key metadata from the video
@@ -56,7 +55,6 @@ class CodingVideo:
         """Given a time in seconds, returns the value of the nearest frame"""
         return round(seconds * self.fps)
 
-
     def get_frame_rgb_array(self, frame_number: int) -> np.ndarray:
         """Returns a numpy N-dimensional array (ndarray)
 
@@ -77,7 +75,9 @@ class CodingVideo:
         return cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
     def get_image_as_bytes(self, seconds: int) -> bytes:
-        self.capture.set(cv2.CAP_PROP_POS_FRAMES, self.get_frame_number_at_time(seconds))
+        self.capture.set(
+            cv2.CAP_PROP_POS_FRAMES, self.get_frame_number_at_time(seconds)
+        )
         ok, frame = self.capture.read()
         if not ok or frame is None:
             raise ValueError("Invalid frame in target location")
@@ -105,26 +105,28 @@ class CodingVideo:
         frame = self.get_frame_rgb_array(frame_number)
         return pytesseract.image_to_string(frame)
 
-
-    def save_as_image(self, seconds: int, output_path: Path | str = 'output.png') -> None:
-      """Saves the given frame as a png image
+    def save_as_image(
+        self, seconds: int, output_path: Path | str = "output.png"
+    ) -> None:
+        """Saves the given frame as a png image
 
         This uses OpenCV's imwrite function to save the selected frame.
 
         Reference
         ---------
         https://docs.opencv.org/4.x/d4/da8/group__imgcodecs.html
-      """
-      frame_number = self.get_frame_number_at_time(seconds)
-      frame = self.get_frame_rgb_array(frame_number)
-      frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-      cv2.imwrite(str(output_path), frame_bgr)
+        """
+        frame_number = self.get_frame_number_at_time(seconds)
+        frame = self.get_frame_rgb_array(frame_number)
+        frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+        cv2.imwrite(str(output_path), frame_bgr)
+
 
 def test():
     """Try out your class here"""
     oop = CodingVideo(VID_PATH)
     print(oop)
-    #oop.save_as_image(42)
+    # oop.save_as_image(42)
     seconds = 534
 
     frame_number = oop.get_frame_number_at_time(seconds)
@@ -135,5 +137,6 @@ def test():
 
     print(oop.get_text_from_frame(frame_number))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     test()

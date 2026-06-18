@@ -5,6 +5,8 @@ Drive the API to complete "interprocess communication"
 Requirements
 """
 
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from fastapi import FastAPI, HTTPException
 from fastapi import Response
 from pydantic import BaseModel
@@ -13,20 +15,26 @@ from library_basics import CodingVideo
 
 
 app = FastAPI()
-
+app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
+app.mount("/resources", StaticFiles(directory="resources"), name="resources")
 
 # We'll create a lightweight "database" for our videos
 # You can add uploads later (not required for assessment)
 # For now, we will just hardcode are samples
-VIDEOS: dict[str, Path] = {
-    "demo": Path("resources/oop.mp4")
-}
+VIDEOS: dict[str, Path] = {"demo": Path("resources/oop.mp4")}
+
 
 class VideoMetaData(BaseModel):
     fps: float
     frame_count: int
     duration_seconds: float
     _links: dict | None = None
+
+
+@app.get("/")
+def home():
+    return FileResponse("frontend/index.html")
+
 
 @app.get("/video")
 def list_videos():
@@ -36,15 +44,16 @@ def list_videos():
         "videos": [
             {
                 "id": vid,
-                "path": str(path), # Not standard for debug only
+                "path": str(path),  # Not standard for debug only
                 "_links": {
                     "self": f"/video/{vid}",
-                    "frame_example": f"/video/{vid}/frame/1.0"
-                }
+                    "frame_example": f"/video/{vid}/frame/1.0",
+                },
             }
             for vid, path in VIDEOS.items()
-        ]
+        ],
     }
+
 
 def _open_vid_or_404(vid: str) -> CodingVideo:
     path = VIDEOS.get(vid)
@@ -55,11 +64,10 @@ def _open_vid_or_404(vid: str) -> CodingVideo:
     except ValueError as e:
         raise HTTPException(status_code=400, detail=f"Could not open video {e}")
 
+
 def _meta(video: CodingVideo) -> VideoMetaData:
     return VideoMetaData(
-            fps=video.fps,
-            frame_count=video.frame_count,
-            duration_seconds=video.duration
+        fps=video.fps, frame_count=video.frame_count, duration_seconds=video.duration
     )
 
 
@@ -67,12 +75,12 @@ def _meta(video: CodingVideo) -> VideoMetaData:
 def video(vid: str):
     video = _open_vid_or_404(vid)
     try:
-            meta = _meta(video)
-            meta._links = {
-                "self": f"/video/{vid}",
-                "frames": f"/video/{vid}/frame/{{seconds}}"
-            }
-            return meta
+        meta = _meta(video)
+        meta._links = {
+            "self": f"/video/{vid}",
+            "frames": f"/video/{vid}/frame/{{seconds}}",
+        }
+        return meta
     finally:
         video.capture.release()
 
@@ -83,7 +91,8 @@ def video_frame(vid: str, t: float):
         video = _open_vid_or_404(vid)
         return Response(content=video.get_image_as_bytes(t), media_type="image/png")
     finally:
-      video.capture.release()
+        video.capture.release()
+
 
 @app.get("/video/{vid}/frame/{t}/ocr")
 def video_ocr(vid: str, t: float):
@@ -91,6 +100,4 @@ def video_ocr(vid: str, t: float):
 
     frame = video.get_frame_number_at_time(t)
 
-    return {
-        "text": video.get_text_from_frame(frame)
-    }
+    return {"text": video.get_text_from_frame(frame)}
