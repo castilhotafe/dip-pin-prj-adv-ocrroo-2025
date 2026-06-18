@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OCR Video Learning Assistant</title>
+    <title>CODE HIGH-VIS</title>
     <link rel="stylesheet" href="/frontend/style.css">
 </head>
 <body>
 
 <header>
-    <h1>OCR Video Learning Assistant</h1>
+    <h1>CODE HIGH-VIS</h1>
     <p>Navigate through a coding video using accessible controls.</p>
 </header>
 
@@ -45,7 +45,23 @@
         </button>
 
         <section aria-labelledby="code-output-title">
-            <h2 id="code-output-title">Code From Video</h2>
+            <div class="code-output-header">
+
+                <h2 id="code-output-title">Code From Video</h2>
+
+                <button
+
+                        id="contrast-toggle"
+
+                        type="button"
+
+                        aria-pressed="false">
+
+                    High Contrast Mode OFF
+
+                </button>
+
+            </div>
 
             <pre
                     id="ocr-result"
